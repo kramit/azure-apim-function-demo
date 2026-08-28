@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+local.settings.json
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+.vscode/
+*.log
+*.zip
+infra/parameters.json
+infra/*.parameters.json
+!infra/parameters.example.json
+infra/main.json
