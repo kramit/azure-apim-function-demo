@@ -21,6 +21,12 @@ The [LLM token-limit policy](https://learn.microsoft.com/azure/api-management/ll
 requires a supported tier such as Developer. Developer is a continuously billed
 non-production tier. Foundry inference is also billed by Azure.
 
+```text
+Browser  ── GET /hello/hello  ── Consumption APIM ── Azure Function
+         └─ POST /agent/responses ── Developer APIM ── Foundry agent
+                APIM subscription key      Managed identity to Foundry
+```
+
 ## Prerequisites
 
 - Azure CLI with Bicep, Bash, jq, curl, and zip.
@@ -52,6 +58,17 @@ The agent script creates `sc500-token-limit-demo` if needed. You can set
 The model deployment setting is used when creating a new agent. The Bicep
 templates deploy the Developer gateway and the API, operation, subscription,
 and policy. Gateway provisioning and RBAC propagation can take several minutes.
+
+To create the web app with the Azure CLI, use a globally unique name and capture
+the hostname as the origin that the gateways should allow.
+
+```bash
+az group create --name "$RESOURCE_GROUP" --location "$LOCATION"
+SITE_HOST=$(az staticwebapp create --resource-group "$RESOURCE_GROUP" \
+  --name '<unique-site-name>' --location westeurope --sku Free \
+  --query defaultHostname --output tsv)
+export SITE_ORIGIN="https://$SITE_HOST"
+```
 
 To publish your own copy of the page, set the endpoint defaults in
 `site/index.html` to the two deployed gateway URLs. Upload the buildless
@@ -94,6 +111,17 @@ APIM_NAME=<developer-apim-name> \
 
 If the first keyed request is already throttled, retry after the current
 window expires. For a customized limit, adjust `MAX_REQUESTS` to suit the demo.
+
+To inspect a single agent exchange from the terminal, set
+`AGENT_APIM_SUBSCRIPTION_KEY` in your shell and call the Developer gateway.
+The `-i` flag includes the APIM token headers in the output.
+
+```bash
+curl -i 'https://<developer-apim-name>.azure-api.net/agent/responses' \
+  -H "Ocp-Apim-Subscription-Key: ${AGENT_APIM_SUBSCRIPTION_KEY:?Set the agent key}" \
+  -H 'Content-Type: application/json' \
+  --data '{"input":"In one sentence, what does Azure API Management do?"}'
+```
 
 ## Clean up
 
