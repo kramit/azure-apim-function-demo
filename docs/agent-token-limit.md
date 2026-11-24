@@ -36,28 +36,13 @@ Browser  ── GET /hello/hello  ── Consumption APIM ── Azure Function
 
 ## Deploy both demos
 
-If you want the interactive page, create a Free Azure Static Web App first, in a region that supports Static Web Apps. Record its HTTPS origin. For a CLI-only deployment, omit `SITE_ORIGIN`.
+For a CLI-only deployment, omit `SITE_ORIGIN`. For the interactive page,
+create the web app first so you can pass its origin to both gateways.
 
 ```bash
 export RESOURCE_GROUP=azure-apim-function-demo-rg
 export LOCATION=westeurope
-export SITE_ORIGIN=https://<your-site>.azurestaticapps.net
-
-RESOURCE_PREFIX=<unique-lowercase-prefix> ./scripts/deploy.sh
-
-APIM_NAME=<unique-developer-apim-name> \
-PUBLISHER_EMAIL=<your-azure-publisher-email> \
-FOUNDRY_PROJECT_ID='/subscriptions/<id>/resourceGroups/<group>/providers/Microsoft.CognitiveServices/accounts/<account>/projects/<project>' \
-MODEL_DEPLOYMENT=<model-deployment-name> \
-TOKENS_PER_MINUTE=200 \
-./scripts/deploy-agent.sh
 ```
-
-The agent script creates `sc500-token-limit-demo` if needed. You can set
-`AGENT_NAME` to use another name. An existing agent with that name is reused.
-The model deployment setting is used when creating a new agent. The Bicep
-templates deploy the Developer gateway and the API, operation, subscription,
-and policy. Gateway provisioning and RBAC propagation can take several minutes.
 
 To create the web app with the Azure CLI, use a globally unique name and capture
 the hostname as the origin that the gateways should allow.
@@ -69,6 +54,27 @@ SITE_HOST=$(az staticwebapp create --resource-group "$RESOURCE_GROUP" \
   --query defaultHostname --output tsv)
 export SITE_ORIGIN="https://$SITE_HOST"
 ```
+
+Deploy both gateway APIs.
+
+```bash
+RESOURCE_PREFIX='<unique-lowercase-prefix>' ./scripts/deploy.sh
+
+APIM_NAME='<unique-developer-apim-name>' \
+PUBLISHER_EMAIL='<your-azure-publisher-email>' \
+FOUNDRY_PROJECT_ID='/subscriptions/<id>/resourceGroups/<group>/providers/Microsoft.CognitiveServices/accounts/<account>/projects/<project>' \
+MODEL_DEPLOYMENT='<model-deployment-name>' \
+TOKENS_PER_MINUTE=200 \
+./scripts/deploy-agent.sh
+```
+
+The agent script creates `sc500-token-limit-demo` if needed. You can set
+`AGENT_NAME` to use another name. An existing agent with that name is reused.
+The model deployment setting is used when creating a new agent. The Bicep
+templates deploy the Developer gateway and the API, operation, subscription,
+and policy. Developer gateway provisioning can take 30–40 minutes.
+Allow time for the agent role assignment to propagate before smoke testing.
+See the [Azure provisioning guide](https://learn.microsoft.com/azure/api-management/get-started-create-service-instance-cli).
 
 To publish your own copy of the page, set the endpoint defaults in
 `site/index.html` to the two deployed gateway URLs. Upload the buildless
@@ -105,7 +111,7 @@ throttling with a retry interval.
 
 ```bash
 RESOURCE_GROUP=azure-apim-function-demo-rg \
-APIM_NAME=<developer-apim-name> \
+APIM_NAME='<developer-apim-name>' \
 ./scripts/test-agent.sh
 ```
 
