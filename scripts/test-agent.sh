@@ -19,7 +19,7 @@ STATUS=$(curl -sS --max-time 45 -o /dev/null -w '%{http_code}' -H 'Content-Type:
 echo 'Without key: HTTP 401.'
 
 for (( attempt=1; attempt<=MAX_REQUESTS; attempt++ )); do
-  STATUS=$(curl -sS --max-time 45 -D "$RESPONSES/headers" -o "$RESPONSES/body" -w '%{http_code}' \
+  STATUS=$(curl -sS --compressed --max-time 45 -D "$RESPONSES/headers" -o "$RESPONSES/body" -w '%{http_code}' \
     -H 'Content-Type: application/json' -H "Ocp-Apim-Subscription-Key: $KEY" -d "$BODY" "$URL")
   case "$STATUS" in
     200)

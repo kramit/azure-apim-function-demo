@@ -29,6 +29,8 @@ __SITE_CORS__
     }</set-body>
     <rewrite-uri template="/responses?api-version=v1" copy-unmatched-params="false" />
     <set-header name="Content-Type" exists-action="override"><value>application/json</value></set-header>
+    <!-- Keep the Foundry response readable by the token-limit policy. -->
+    <set-header name="Accept-Encoding" exists-action="override"><value>identity</value></set-header>
     <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
     <llm-token-limit counter-key="@(&quot;sc500-agent:&quot; + context.Subscription.Id)"
         tokens-per-minute="__TOKENS_PER_MINUTE__" estimate-prompt-tokens="false"
