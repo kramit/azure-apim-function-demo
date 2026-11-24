@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SC-500 | API Gateway Lab</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="demo.js"></script>
+</head>
+<body>
+  <header class="page-header">
+    <p class="eyebrow">SC-500 · LIVE AZURE LAB</p>
+    <h1>API Gateway Lab</h1>
+    <p>See how Azure API Management checks subscription keys and meters an agent’s tokens.</p>
+    <a href="https://github.com/kramit/azure-apim-function-demo">Deployment guide and source</a>
+  </header>
+  <main>
+    <section aria-labelledby="hello-title">
+      <h2 id="hello-title">Function subscription keys</h2>
+      <p>Compare the same greeting request with and without an APIM subscription key.</p>
+      <label for="hello-url">Greeting endpoint</label>
+      <input id="hello-url" type="url" value="https://sc500mw261124-apim.azure-api.net/hello/hello">
+      <label for="hello-key">Greeting subscription key</label>
+      <input id="hello-key" type="password" autocomplete="off" spellcheck="false">
+      <div class="actions">
+        <button id="hello-no-key" class="secondary">Send without key</button>
+        <button id="hello-with-key">Send with key</button>
+      </div>
+      <p class="status" id="hello-status" role="status">Ready</p>
+      <pre id="hello-result" aria-label="Greeting response"></pre>
+    </section>
+    <section aria-labelledby="agent-title">
+      <h2 id="agent-title">Foundry agent token limit</h2>
+      <p>Send a prompt to the agent and watch the per-subscription token counter.</p>
+      <label for="agent-url">Agent endpoint</label>
+      <input id="agent-url" type="url" value="https://sc500mw261124-ai-apim.azure-api.net/agent/responses">
+      <label for="agent-key">Agent subscription key</label>
+      <input id="agent-key" type="password" autocomplete="off" spellcheck="false">
+      <label for="agent-prompt">Prompt</label>
+      <textarea id="agent-prompt" rows="3">In one sentence, what does Azure API Management do?</textarea>
+      <div class="actions"><button id="agent-send">Send prompt</button></div>
+      <dl class="metrics">
+        <div><dt>Rate limit</dt><dd><span id="token-limit">200</span> TPM</dd></div>
+        <div><dt>This response</dt><dd id="token-used">—</dd></div>
+        <div><dt>Remaining</dt><dd id="token-left">—</dd></div>
+      </dl>
+      <p class="status" id="agent-status" role="status">Ready</p>
+      <pre id="agent-result" aria-label="Agent response"></pre>
+    </section>
+  </main>
+  <footer>Keys stay in the page session and are sent only to the endpoint you select.</footer>
+</body>
+</html>

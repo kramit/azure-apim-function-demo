@@ -6,6 +6,9 @@ param location string = resourceGroup().location
 @maxLength(16)
 param resourcePrefix string
 
+@description('Optional HTTPS origin of the interactive demo page.')
+param siteOrigin string = ''
+
 var functionAppName = '${resourcePrefix}-func'
 var storageAccountName = toLower(replace('${resourcePrefix}store', '-', ''))
 var apimName = '${resourcePrefix}-apim'
@@ -84,6 +87,15 @@ resource api 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
       header: 'Ocp-Apim-Subscription-Key'
       query: 'subscription-key'
     }
+  }
+}
+
+resource browserPolicy 'Microsoft.ApiManagement/service/apis/policies@2022-08-01' = if (!empty(siteOrigin)) {
+  parent: api
+  name: 'policy'
+  properties: {
+    format: 'rawxml'
+    value: replace(loadTextContent('hello-cors.xml'), '__SITE_ORIGIN__', siteOrigin)
   }
 }
 

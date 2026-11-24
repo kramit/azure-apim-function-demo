@@ -3,13 +3,14 @@ set -euo pipefail
 
 RESOURCE_GROUP=${RESOURCE_GROUP:-azure-apim-function-demo-rg}
 LOCATION=${LOCATION:-westeurope}
+SITE_ORIGIN=${SITE_ORIGIN:-}
 RESOURCE_PREFIX=${RESOURCE_PREFIX:-apimfunc$RANDOM}
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 
 command -v az >/dev/null || { echo 'Azure CLI is required.' >&2; exit 1; }
 az account show --output none
 az group create --name "$RESOURCE_GROUP" --location "$LOCATION" --output none
-DEPLOYMENT=$(az deployment group create --resource-group "$RESOURCE_GROUP" --template-file "$ROOT/infra/main.bicep" --parameters location="$LOCATION" resourcePrefix="$RESOURCE_PREFIX" --query properties.outputs --output json)
+DEPLOYMENT=$(az deployment group create --resource-group "$RESOURCE_GROUP" --template-file "$ROOT/infra/main.bicep" --parameters location="$LOCATION" resourcePrefix="$RESOURCE_PREFIX" siteOrigin="$SITE_ORIGIN" --query properties.outputs --output json)
 FUNCTION_APP=$(jq -r '.functionAppName.value' <<<"$DEPLOYMENT")
 APIM_NAME=$(jq -r '.apimName.value' <<<"$DEPLOYMENT")
 printf '%s\n' "Deploying function code to $FUNCTION_APP. APIM provisioning can take several minutes."

@@ -1,0 +1,6 @@
+    <cors allow-credentials="false">
+      <allowed-origins><origin>__SITE_ORIGIN__</origin></allowed-origins>
+      <allowed-methods><method>POST</method></allowed-methods>
+      <allowed-headers><header>Content-Type</header><header>Ocp-Apim-Subscription-Key</header></allowed-headers>
+      <expose-headers><header>X-Tokens-Consumed</header><header>X-Remaining-Tokens</header><header>Retry-After</header><header>X-Token-Rate-Limit</header></expose-headers>
+    </cors>

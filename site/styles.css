@@ -1,0 +1,37 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, sans-serif;
+  color: #e8f0fa;
+  background: #101827;
+  line-height: 1.55;
+  --muted: #b0bfd2;
+  --accent: #84e4ce;
+  --border: #40516b;
+}
+* { box-sizing: border-box; }
+body { margin: 0 auto; max-width: 76rem; padding: clamp(1rem, 4vw, 3.5rem); }
+.page-header { padding-block: 1.5rem 2.2rem; }
+.eyebrow { color: var(--accent); font-weight: 700; letter-spacing: .12em; }
+h1, h2 { line-height: 1.12; margin: 0; }
+h1 { font-size: clamp(2.6rem, 7vw, 5rem); letter-spacing: -.06em; }
+h2 { font-size: 1.5rem; letter-spacing: -.025em; }
+p, footer { color: var(--muted); }
+a { color: var(--accent); text-underline-offset: .25em; }
+main { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 27rem), 1fr)); gap: 1.25rem; align-items: start; }
+section { border: 1px solid var(--border); border-radius: 1rem; background: #182438; padding: clamp(1rem, 3vw, 1.75rem); }
+label { display: block; margin-top: .8rem; margin-bottom: .2rem; font-weight: 650; }
+input, textarea, button { font: inherit; border-radius: .45rem; }
+input, textarea { width: 100%; padding: .55rem .65rem; border: 1px solid var(--border); background: #101827; color: inherit; }
+textarea { resize: vertical; }
+.actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+button { padding: .5rem .8rem; border: 1px solid var(--accent); background: var(--accent); color: #0c2927; font-weight: 750; cursor: pointer; }
+button.secondary { background: transparent; color: var(--accent); }
+button:disabled { opacity: .55; cursor: wait; }
+:focus-visible { outline: 3px solid #f6cd88; outline-offset: 3px; }
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: 1rem 0; }
+.metrics div { background: #101827; border-radius: .45rem; padding: .5rem; }
+dt { color: var(--muted); font-size: .875rem; }
+dd { margin: 0; font-size: 1.15rem; font-weight: 750; }
+.status { font-weight: 700; color: var(--accent); margin-bottom: .35rem; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; font-size: .92rem; }
+footer { margin-top: 1.4rem; }

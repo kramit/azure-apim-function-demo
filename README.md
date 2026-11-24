@@ -1,6 +1,10 @@
-# Azure API Management + Azure Functions Demo
+# SC-500 Azure API Management Demos
 
 This lab demonstrates a small, low-cost API architecture: an Azure Function provides an HTTP backend and Azure API Management (APIM) is the public API gateway. APIM enforces subscription-key authentication, separating backend application logic from gateway security policy.
+
+[Open the interactive lab](https://brave-coast-05f5d1003.6.azurestaticapps.net)
+or follow the [complete presenter and deployment guide](docs/agent-token-limit.md)
+for both the Function subscription-key demo and the Foundry agent token-limit demo.
 
 ## Architecture
 
@@ -112,5 +116,6 @@ RESOURCE_GROUP=azure-apim-function-demo-rg ./scripts/cleanup.sh
 infra/     Bicep infrastructure and safe parameter example
 function/  Python Azure Functions v2 source
 scripts/   deploy, test, and cleanup automation
-docs/      step-by-step demo guide
+docs/      step-by-step demo guides
+site/      interactive Azure Static Web Apps page
 ```

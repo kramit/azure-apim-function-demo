@@ -1,0 +1,13 @@
+<policies>
+  <inbound>
+    <cors allow-credentials="false">
+      <allowed-origins><origin>__SITE_ORIGIN__</origin></allowed-origins>
+      <allowed-methods><method>GET</method></allowed-methods>
+      <allowed-headers><header>Ocp-Apim-Subscription-Key</header></allowed-headers>
+    </cors>
+    <base />
+  </inbound>
+  <backend><base /></backend>
+  <outbound><base /></outbound>
+  <on-error><base /></on-error>
+</policies>
